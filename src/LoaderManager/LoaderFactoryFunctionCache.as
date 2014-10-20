@@ -50,5 +50,11 @@ package LoaderManager
 			
 			if(cache!=null) cache.apply();
 		}
+		
+		public function getCache(key:String):FunctionCache
+		{
+			var cache:FunctionCache = _dic[key];
+			return cache;
+		}
 	}
 }

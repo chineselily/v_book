@@ -52,7 +52,11 @@ package LoaderManager
 		
 		public function addGroupComplete(sGroup:String, fun:Function, ...params):LoaderFactory
 		{
-			getFunCache(sGroup).cacheFun(LoaderFactoryFunctionCache.COMPLETE,fun,params);
+			var _bloader:BulkLoader = _dicBloader[sGroup];
+			if(_bloader && _bloader.isFinished)
+				getFunCache(sGroup).getCache(LoaderFactoryFunctionCache.COMPLETE).applyImmediatly(fun,params);
+			else
+				getFunCache(sGroup).cacheFun(LoaderFactoryFunctionCache.COMPLETE,fun,params);
 			
 			return this;
 		}

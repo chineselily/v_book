@@ -1,6 +1,6 @@
 package utils
 {
-	import ConfigManager.LoadConfig;
+	
 	
 	public class FunctionCache
 	{
@@ -53,6 +53,15 @@ package utils
 				fun.apply(null,_arrParam[i]);
 			}
 			
+		}
+		
+		public function applyImmediatly(fun:Function, param:Array):void
+		{
+			if(fun==null) return;
+			
+			cacheFun(fun,param);
+			
+			fun.apply(null,param);
 		}
 	}
 }

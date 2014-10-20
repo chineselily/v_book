@@ -47,7 +47,14 @@ package LoaderManager
 		
 		public function addCompleteFun(fun:Function,...params):LoaderFactoryItem
 		{
-			_funCache.cacheFun(LoaderFactoryFunctionCache.COMPLETE,fun,params);
+			if(_loaditem.status == LoadingItem.STATUS_FINISHED)
+			{
+				var arrp:Array = params;
+				arrp.unshift(LoaderFactoryLibrary.Instance().getAppliactionLib(_loaditem.id));
+				_funCache.getCache(LoaderFactoryFunctionCache.COMPLETE).applyImmediatly(fun,arrp);
+			}
+			else
+				_funCache.cacheFun(LoaderFactoryFunctionCache.COMPLETE,fun,params);
 			return this;
 		}
 		
@@ -59,7 +66,10 @@ package LoaderManager
 		
 		public function addErrorFun(fun:Function, ...params):LoaderFactoryItem
 		{
-			_funCache.cacheFun(LoaderFactoryFunctionCache.ERROR,fun,params);
+			if(_loaditem.status == LoadingItem.STATUS_FINISHED)
+				_funCache.getCache(LoaderFactoryFunctionCache.ERROR).applyImmediatly(fun,params);
+			else
+				_funCache.cacheFun(LoaderFactoryFunctionCache.ERROR,fun,params);
 			return this;
 		}
 	}
