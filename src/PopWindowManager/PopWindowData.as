@@ -7,6 +7,7 @@ package PopWindowManager
 		private var _id:String;
 		private var _winPath:String;
 		private var _win:PopWindow;
+		private var _aniType:int;
 		
 		private var _mask:Shape;
 		
@@ -15,6 +16,7 @@ package PopWindowManager
 			_id = id;
 			_winPath = path;
 			_win = win;
+			_aniType=PopWindowAni.ANI_TYPE_CENTER;
 			
 			_mask = new Shape();
 		}
@@ -32,6 +34,11 @@ package PopWindowManager
 		public function get popWin():PopWindow
 		{
 			return _win; 
+		}
+		
+		public function get mask():Shape
+		{
+			return _mask;
 		}
 	}
 }

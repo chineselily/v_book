@@ -21,46 +21,25 @@ package utils
 			_arrParam.push(param);
 		}
 		
-		public function getArrFun():Array
-		{
-			return _arrFun;	
-		}
-		
-		public function getFunArrParam(fun:Function):Array
-		{
-			var index:int = _arrFun.indexOf(fun);
-			if(index!=-1) return _arrParam[index];
-			
-			return null;
-		}
-		
-		public function getArrParam():Array
-		{
-			return _arrParam;
-		}
-		
-		public function apply():void
+		public function apply(addParam:Array=null):void
 		{
 			if(_arrFun==null 
 			|| _arrParam==null 
 			|| _arrFun.length<1
 			|| _arrFun.length!=_arrParam.length) return;
 			
-			var fun:Function;
 			for(var i:int=0; i<_arrFun.length; i+=1)
 			{
-				fun = _arrFun[i];
-				fun.apply(null,_arrParam[i]);
+				sapply(_arrFun[i],_arrParam[i],addParam);
 			}
 			
 		}
 		
-		public function applyImmediatly(fun:Function, param:Array):void
+		public static function sapply(fun:Function, param:Array, addparam:Array=null):void
 		{
 			if(fun==null) return;
-			
-			cacheFun(fun,param);
-			
+
+			if(addparam!=null) param = addparam.concat(param);
 			fun.apply(null,param);
 		}
 	}

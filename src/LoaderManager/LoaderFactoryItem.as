@@ -8,6 +8,8 @@ package LoaderManager
 	
 	import br.com.stimuli.loading.BulkLoader;
 	import br.com.stimuli.loading.loadingtypes.LoadingItem;
+	
+	import utils.FunctionCache;
 
 	public class LoaderFactoryItem
 	{
@@ -30,13 +32,12 @@ package LoaderManager
 		{
 			var info:LoaderItemInfo = new LoaderItemInfo(_loaditem.id,_loaditem.content);
 			LoaderFactoryLibrary.Instance().addAppliactionLib(_loaditem.id,info);
-			_funCache.concatLoadInfo(LoaderFactoryFunctionCache.COMPLETE, info);
-			_funCache.apply(LoaderFactoryFunctionCache.COMPLETE);
+			_funCache.apply(LoaderFactoryFunctionCache.COMPLETE,[info]);
 		}
 		
 		private function progress(evt:ProgressEvent):void
 		{
-			_funCache.apply(LoaderFactoryFunctionCache.PROGRESS);
+			_funCache.apply(LoaderFactoryFunctionCache.PROGRESS,[evt.bytesLoaded,evt.bytesTotal]);
 		}
 		
 		private function error(evt:ErrorEvent):void
@@ -49,9 +50,7 @@ package LoaderManager
 		{
 			if(_loaditem.status == LoadingItem.STATUS_FINISHED)
 			{
-				var arrp:Array = params;
-				arrp.unshift(LoaderFactoryLibrary.Instance().getAppliactionLib(_loaditem.id));
-				_funCache.getCache(LoaderFactoryFunctionCache.COMPLETE).applyImmediatly(fun,arrp);
+				FunctionCache.sapply(fun,params,[LoaderFactoryLibrary.Instance().getAppliactionLib(_loaditem.id)]);
 			}
 			else
 				_funCache.cacheFun(LoaderFactoryFunctionCache.COMPLETE,fun,params);
@@ -66,8 +65,8 @@ package LoaderManager
 		
 		public function addErrorFun(fun:Function, ...params):LoaderFactoryItem
 		{
-			if(_loaditem.status == LoadingItem.STATUS_FINISHED)
-				_funCache.getCache(LoaderFactoryFunctionCache.ERROR).applyImmediatly(fun,params);
+			if(_loaditem.status == LoadingItem.STATUS_ERROR)
+				FunctionCache.sapply(fun,params);
 			else
 				_funCache.cacheFun(LoaderFactoryFunctionCache.ERROR,fun,params);
 			return this;

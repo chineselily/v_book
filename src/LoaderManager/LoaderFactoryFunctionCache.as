@@ -29,32 +29,11 @@ package LoaderManager
 			return this;
 		}
 		
-		public function concatLoadInfo(key:String, info:LoaderItemInfo):void
-		{
-			var cache:FunctionCache = _dic[key];
-			if(cache==null) return;
-			
-			var arrFun:Array = cache.getArrFun();
-			if(arrFun==null) return;
-			
-			for(var i:int=0;i<arrFun.length;i+=1)
-			{
-				var arrParam:Array = cache.getFunArrParam(arrFun[i]);
-				if(arrParam!=null) arrParam.unshift(info);
-			}
-		}
-		
-		public function apply(key:String):void
+		public function apply(key:String, addParam:Array=null):void
 		{
 			var cache:FunctionCache = _dic[key];
 			
-			if(cache!=null) cache.apply();
-		}
-		
-		public function getCache(key:String):FunctionCache
-		{
-			var cache:FunctionCache = _dic[key];
-			return cache;
+			if(cache!=null) cache.apply(addParam);
 		}
 	}
 }

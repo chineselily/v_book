@@ -7,6 +7,8 @@ package LoaderManager
 	
 	import br.com.stimuli.loading.BulkLoader;
 	import br.com.stimuli.loading.BulkProgressEvent;
+	
+	import utils.FunctionCache;
 
 	public class LoaderFactory
 	{
@@ -54,7 +56,7 @@ package LoaderManager
 		{
 			var _bloader:BulkLoader = _dicBloader[sGroup];
 			if(_bloader && _bloader.isFinished)
-				getFunCache(sGroup).getCache(LoaderFactoryFunctionCache.COMPLETE).applyImmediatly(fun,params);
+				FunctionCache.sapply(fun,params);
 			else
 				getFunCache(sGroup).cacheFun(LoaderFactoryFunctionCache.COMPLETE,fun,params);
 			
