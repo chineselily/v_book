@@ -1,8 +1,8 @@
-package Trace
+package vtrace
 {
-	public class TraceBase
+	public class traceBase
 	{
-		public function TraceBase()
+		public function traceBase()
 		{
 		}
 		

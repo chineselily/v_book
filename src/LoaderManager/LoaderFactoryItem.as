@@ -1,4 +1,4 @@
-package LoaderManager
+package loadermanager
 {
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
@@ -9,7 +9,7 @@ package LoaderManager
 	import br.com.stimuli.loading.BulkLoader;
 	import br.com.stimuli.loading.loadingtypes.LoadingItem;
 	
-	import utils.FunctionCache;
+	import utils.functionCache;
 
 	public class LoaderFactoryItem
 	{
@@ -33,6 +33,7 @@ package LoaderManager
 			var info:LoaderItemInfo = new LoaderItemInfo(_loaditem.id,_loaditem.content);
 			LoaderFactoryLibrary.Instance().addAppliactionLib(_loaditem.id,info);
 			_funCache.apply(LoaderFactoryFunctionCache.COMPLETE,[info]);
+			removeListener(_loaditem);
 		}
 		
 		private function progress(evt:ProgressEvent):void
@@ -43,6 +44,7 @@ package LoaderManager
 		private function error(evt:ErrorEvent):void
 		{
 			_funCache.apply(LoaderFactoryFunctionCache.ERROR);
+			removeListener(_loaditem);
 		}
 		
 		
@@ -50,7 +52,7 @@ package LoaderManager
 		{
 			if(_loaditem.status == LoadingItem.STATUS_FINISHED)
 			{
-				FunctionCache.sapply(fun,params,[LoaderFactoryLibrary.Instance().getAppliactionLib(_loaditem.id)]);
+				functionCache.sapply(fun,params,[LoaderFactoryLibrary.Instance().getAppliactionLib(_loaditem.id)]);
 			}
 			else
 				_funCache.cacheFun(LoaderFactoryFunctionCache.COMPLETE,fun,params);
@@ -66,10 +68,18 @@ package LoaderManager
 		public function addErrorFun(fun:Function, ...params):LoaderFactoryItem
 		{
 			if(_loaditem.status == LoadingItem.STATUS_ERROR)
-				FunctionCache.sapply(fun,params);
+				functionCache.sapply(fun,params);
 			else
 				_funCache.cacheFun(LoaderFactoryFunctionCache.ERROR,fun,params);
 			return this;
+		}
+		
+		private function removeListener(loaditem:LoadingItem):void
+		{
+			if(loaditem==null) return;
+			loaditem.removeEventListener(Event.COMPLETE,complete);
+			loaditem.removeEventListener(ProgressEvent.PROGRESS, progress);
+			loaditem.removeEventListener(ErrorEvent.ERROR, error);
 		}
 	}
 }

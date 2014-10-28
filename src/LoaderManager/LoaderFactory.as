@@ -1,4 +1,4 @@
-package LoaderManager
+package loadermanager
 {
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
@@ -8,7 +8,7 @@ package LoaderManager
 	import br.com.stimuli.loading.BulkLoader;
 	import br.com.stimuli.loading.BulkProgressEvent;
 	
-	import utils.FunctionCache;
+	import utils.functionCache;
 
 	public class LoaderFactory
 	{
@@ -49,6 +49,8 @@ package LoaderManager
 			if(_dicFactoryItem[formKey(sGroup,sPath)]==null)
 				_dicFactoryItem[formKey(sGroup,sPath)] = new LoaderFactoryItem(_bloader,sPath);
 			
+			if(!_bloader.isRunning) _bloader.start();
+			
 			return _dicFactoryItem[formKey(sGroup,sPath)];
 		}
 		
@@ -56,7 +58,7 @@ package LoaderManager
 		{
 			var _bloader:BulkLoader = _dicBloader[sGroup];
 			if(_bloader && _bloader.isFinished)
-				FunctionCache.sapply(fun,params);
+				functionCache.sapply(fun,params);
 			else
 				getFunCache(sGroup).cacheFun(LoaderFactoryFunctionCache.COMPLETE,fun,params);
 			
@@ -77,16 +79,11 @@ package LoaderManager
 			return this;
 		}
 		
-		public function startGroup(sGroup:String):void
-		{
-			var _bloader:BulkLoader = _dicBloader[sGroup];
-			if(_bloader!=null) _bloader.start();
-		}
-		
 		private function onComplete(evt:Event):void
 		{
 			var curTarget:BulkLoader = evt.currentTarget as BulkLoader;
 			getFunCache(curTarget.name).apply(LoaderFactoryFunctionCache.COMPLETE);
+			removeListener(curTarget);
 		}
 		
 		private function onProgress(evt:ProgressEvent):void
@@ -99,6 +96,7 @@ package LoaderManager
 		{
 			var curTarget:BulkLoader = evt.currentTarget as BulkLoader;
 			getFunCache(curTarget.name).apply(LoaderFactoryFunctionCache.ERROR);
+			removeListener(curTarget);
 		}
 		
 		private function getFunCache(sGroup:String):LoaderFactoryFunctionCache
@@ -108,6 +106,14 @@ package LoaderManager
 			if(_dicCacheFun[sGroup]==null) _dicCacheFun[sGroup] = new LoaderFactoryFunctionCache();
 			
 			return _dicCacheFun[sGroup];
+		}
+		
+		private function removeListener(loader:BulkLoader):void
+		{
+			if(loader==null) return;
+			loader.removeEventListener(BulkProgressEvent.COMPLETE, onComplete);
+			loader.removeEventListener(BulkProgressEvent.PROGRESS, onProgress);
+			loader.removeEventListener("error", onError);
 		}
 		
 		private function formKey(sGroup:String, sPath:String):String

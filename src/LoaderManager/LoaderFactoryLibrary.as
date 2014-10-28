@@ -1,10 +1,10 @@
-package LoaderManager
+package loadermanager
 {
 	import flash.display.Bitmap;
 	import flash.display.MovieClip;
 	import flash.utils.Dictionary;
 	
-	import Trace.TraceManager;
+	import vtrace.traceManager;
 
 	public class LoaderFactoryLibrary
 	{
@@ -27,7 +27,7 @@ package LoaderManager
 		{
 			if(_dicAppliactionLib[domainName]!=null)
 			{
-				TraceManager.Instance().TraceOut("loaderFactory_ApplicationDomain_already_exsit",TraceManager.CLIENT);
+				traceManager.Instance().TraceOut("loaderFactory_ApplicationDomain_already_exsit",traceManager.CLIENT);
 			}
 			_dicAppliactionLib[domainName]=itemInfo;
 		}

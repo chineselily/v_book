@@ -1,11 +1,11 @@
-package LoaderManager
+package loadermanager
 {
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.ProgressEvent;
 	import flash.utils.Dictionary;
 	
-	import utils.FunctionCache;
+	import utils.functionCache;
 
 	public class LoaderFactoryFunctionCache
 	{
@@ -21,9 +21,9 @@ package LoaderManager
 		
 		public function cacheFun(key:String, fun:Function, param:Array):LoaderFactoryFunctionCache
 		{
-			if(_dic[key]==null) _dic[key] = new FunctionCache();
+			if(_dic[key]==null) _dic[key] = new functionCache();
 			
-			var cache:FunctionCache = _dic[key];
+			var cache:functionCache = _dic[key];
 			cache.cacheFun(fun,param);
 			
 			return this;
@@ -31,7 +31,7 @@ package LoaderManager
 		
 		public function apply(key:String, addParam:Array=null):void
 		{
-			var cache:FunctionCache = _dic[key];
+			var cache:functionCache = _dic[key];
 			
 			if(cache!=null) cache.apply(addParam);
 		}

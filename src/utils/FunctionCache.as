@@ -2,14 +2,14 @@ package utils
 {
 	
 	
-	public class FunctionCache
+	public class functionCache
 	{
 		//需缓存函数列表
 		private var _arrFun:Array;
 		//需缓存函数对应的参数
 		private var _arrParam:Array;
 		
-		public function FunctionCache()
+		public function functionCache()
 		{
 			_arrFun = new Array();
 			_arrParam = new Array();
@@ -17,6 +17,8 @@ package utils
 		
 		public function cacheFun(fun:Function, param:Array):void
 		{
+			if(_arrFun.indexOf(fun)!=-1 && _arrParam.indexOf(param)!=-1) return;
+			
 			_arrFun.push(fun);
 			_arrParam.push(param);
 		}

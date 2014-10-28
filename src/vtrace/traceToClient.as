@@ -1,9 +1,9 @@
-package Trace
+package vtrace
 {
 
-	public class TraceToClient extends TraceBase
+	public class traceToClient extends traceBase
 	{
-		public function TraceToClient()
+		public function traceToClient()
 		{
 			super();
 		}

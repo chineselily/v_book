@@ -1,4 +1,4 @@
-package LoaderManager
+package loadermanager
 {
 	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
