@@ -5,10 +5,11 @@ package view
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
-	import flash.utils.getQualifiedSuperclassName;
+	import flash.utils.getQualifiedClassName;
 	
 	import appconfig.app.ProjectStage;
 	
+	import loadermanager.LoaderFactory;
 	import loadermanager.LoaderFactoryLibrary;
 	import loadermanager.LoaderItemInfo;
 	
@@ -18,15 +19,19 @@ package view
 	{
 		private var _popData:PopWindowData;
 		private var _mask:Shape;
+		protected var _resStatus:int;
 		protected var _loadLibrary:LoaderFactoryLibrary;
 		protected var _loadInfo:LoaderItemInfo;
 		protected var _skin:DisplayObjectContainer;
+		protected static const POPWINDOWGROUP:String = "popwindow_group";
 		
 		public function PopWindow()
 		{
 			super();
 			_mask = null;
 			_skin = null;
+			_resStatus=0;
+			_loadLibrary = LoaderFactoryLibrary.Instance();
 		}
 		
 		public function set popData(data:PopWindowData):void
@@ -42,11 +47,11 @@ package view
 		{
 			if(_skin==null);
 			{
-				var clazz:String = getQualifiedSuperclassName(this);
+				var clazz:String = getQualifiedClassName(this);
 				var arr:Array = clazz.split("::");
 				var skinName:String = arr[arr.length-1]+"_mc";
 				
-				_loadInfo = _loadLibrary.getAppliactionLib(_popData.resPath);
+				_loadInfo = _popData.isNoRes?null:_loadLibrary.getAppliactionLib(_popData.resPath);
 				if(_loadInfo!=null) setSkin(_loadInfo.getMovieclip(skinName));
 				
 				
@@ -70,18 +75,23 @@ package view
 			
 		}
 		
+		public function onOpenComplete(params:Array):void
+		{
+			
+		}
+		
 		public function Close(params:Array):void
 		{
 			
 		}
 		
-		public function createMask():void
+		public function createMask(color:uint=0,alpha:Number=0.5):void
 		{
 			if(_mask==null) _mask = new Shape();
 			
 			var rect:Rectangle = stageRect;
 			_mask.graphics.clear();
-			_mask.graphics.beginFill(0,0.5);
+			_mask.graphics.beginFill(color,alpha);
 			_mask.graphics.drawRect(rect.x,rect.y,rect.width,rect.height);
 			_mask.graphics.endFill();
 			
@@ -90,7 +100,37 @@ package view
 		
 		private function get stageRect():Rectangle
 		{
-			return new Rectangle(ProjectStage.x,ProjectStage.y,ProjectStage.width,ProjectStage.height);
+			return new Rectangle(ProjectStage.x,ProjectStage.y,ProjectStage.width,ProjectStage.height+ProjectStage.TOOLHEIGHT);
+		}
+		
+		public function loadRes(progressFun:Function, progressParam:Array, loadcompleteFun:Function, loadcompleteParam:Array, completeFun:Function, completeParam:Array):void
+		{
+			if(_popData.isNoRes)
+			{
+				callComplete();
+				return;
+			}
+			
+			if(_loadLibrary.getAppliactionLib(_popData.resPath)==null)
+			{
+				if(_resStatus!=1)
+				{
+					_resStatus=1;
+					LoaderFactory.Instance().addGroup(POPWINDOWGROUP,_popData.resPath)
+						.addProgressFun(progressFun, progressParam)
+						.addCompleteFun(loadcompleteFun, loadcompleteParam);
+				}
+				else
+					callComplete();
+			}
+			else
+				callComplete();
+			
+			function callComplete():void
+			{
+				if(completeFun!=null)
+					completeFun.apply(null,completeParam);
+			}
 		}
 	}
 }

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<first>
+		<info id="winBookIcon" path="swf/winBookIcon.swf"/>
+		<info id="winTool" path="swf/winTool.swf"/>
+		<info id="winVedio" path="swf/winVedio.swf"/>
+	</first>
+</root>

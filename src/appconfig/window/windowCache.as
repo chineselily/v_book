@@ -1,6 +1,8 @@
 package appconfig.window
 {
 	import flash.utils.Dictionary;
+	
+	import appconfig.app.ProjectConst;
 
 	public class windowCache
 	{
@@ -15,17 +17,22 @@ package appconfig.window
 			if(_instance==null) _instance = new windowCache(new windowCacheInteral());
 			return _instance;
 		}
-		public function cache(list:XMLList):void
+		public function cache(xml:XML):void
 		{
-			
+			var xmlelem:XML;
+			var winInfo:windowInfo;
+			for each(xmlelem in xml.first.info)
+			{
+				winInfo = new windowInfo(xmlelem);
+				_dCache[winInfo.id]=winInfo;
+			}
 		}
 		public function windowPath(id:String):String
 		{
 			var info:windowInfo = _dCache[id];
-			if(info!=null) return info.path;
+			if(info!=null) return ProjectConst.serverPath+info.path;
 			return null;
 		}
-		
 	}
 }
 class windowCacheInteral{}
@@ -33,8 +40,9 @@ class windowInfo
 {
 	public var id:String;
 	public var path:String; 
-	public function windowInfo()
+	public function windowInfo(xml:XML)
 	{
-		
+		id = xml.@id;
+		path = xml.@path;
 	}
 }

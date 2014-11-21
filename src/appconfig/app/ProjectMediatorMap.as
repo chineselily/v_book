@@ -1,8 +1,16 @@
 package appconfig.app
 {
 	import mediator.LoadingMediator;
+	import mediator.ToolMediator;
+	import mediator.bookIconMediator;
+	import mediator.bookMediator;
+	import mediator.vedioMediator;
 	
+	import view.winBook;
+	import view.winBookIcon;
 	import view.winLoading;
+	import view.winTool;
+	import view.winVedio;
 
 	public class ProjectMediatorMap
 	{
@@ -20,6 +28,10 @@ package appconfig.app
 		public function Map():void
 		{
 			MapImp(winLoading, LoadingMediator);
+			MapImp(winBookIcon, bookIconMediator);
+			MapImp(winBook, bookMediator);
+			MapImp(winTool, ToolMediator);
+			MapImp(winVedio, vedioMediator);
 		}
 		
 		private function MapImp(winClazz:Class, meditorClazz:Class):void

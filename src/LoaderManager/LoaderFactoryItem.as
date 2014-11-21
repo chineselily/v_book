@@ -3,8 +3,10 @@ package loadermanager
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.ProgressEvent;
+	import flash.filesystem.File;
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
+	import flash.system.SecurityDomain;
 	
 	import br.com.stimuli.loading.BulkLoader;
 	import br.com.stimuli.loading.loadingtypes.LoadingItem;
@@ -16,13 +18,27 @@ package loadermanager
 		private var _funCache:LoaderFactoryFunctionCache;
 		
 		private var _loaditem:LoadingItem;
+		private var _bulkLoader:BulkLoader;
 		
-		public function LoaderFactoryItem(_bLoader:BulkLoader, sPath:String)
+		public function LoaderFactoryItem(_bLoader:BulkLoader, sPath:String, aobj:Object=null)
 		{
+			_bulkLoader = _bLoader;
 			_funCache = new LoaderFactoryFunctionCache();
-			
-			var obj:Object = {id:sPath, context:new LoaderContext(false,new ApplicationDomain())};		
+			var content:LoaderContext = new LoaderContext(); 
+			//var userStorageDir:File = File.applicationStorageDirectory; 
+			content.applicationDomain = new ApplicationDomain(); 
+			//content.allowLoadBytesCodeExecution= true;
+			content.allowCodeImport=true;
+			//content.securityDomain = SecurityDomain.currentDomain;
+			//var obj:Object = {id:sPath, context:new LoaderContext(false,new ApplicationDomain())};	
+			var obj:Object = {id:sPath, context:content};	
+			if(aobj!=null)
+			{
+				for(var key:* in aobj)
+					obj[key]=aobj[key];
+			}
 			_loaditem = _bLoader.add(sPath,obj);
+			//_loaditem = _bLoader.add(userStorageDir.resolvePath(sPath).nativePath,obj);
 			_loaditem.addEventListener(Event.COMPLETE,complete);
 			_loaditem.addEventListener(ProgressEvent.PROGRESS, progress);
 			_loaditem.addEventListener(ErrorEvent.ERROR, error);

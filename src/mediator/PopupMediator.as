@@ -34,7 +34,9 @@ package mediator
 		{
 			//_arrAttachEvent = [AppEvent];
 		}
-		
+		/**
+		 * 向popupmanager注册窗口 
+		 */		
 		protected function attachPopWindows():void
 		{
 

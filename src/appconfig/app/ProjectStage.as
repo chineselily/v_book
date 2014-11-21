@@ -3,7 +3,8 @@ package appconfig.app
 	public class ProjectStage
 	{
 		public static const WIDTH:Number=800;
-		public static const HEIGHT:Number=600;
+		public static const HEIGHT:Number=800;
+		public static const TOOLHEIGHT:Number=50;//用于工具条的放置
 		
 		private static var _x:Number=0;
 		private static var _y:Number=0;
@@ -17,10 +18,10 @@ package appconfig.app
 		public static function onResize(newWidth:Number, newHeight:Number):void
 		{
 			_width = newWidth;
-			_height = newHeight;
+			_height = newHeight-TOOLHEIGHT;
 			
 			_x = (newWidth-WIDTH)/2;
-			_y = (newHeight-HEIGHT)/2;
+			_y = (newHeight-HEIGHT-TOOLHEIGHT)/2;
 		}
 		
 		public static function get x():Number

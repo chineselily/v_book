@@ -17,16 +17,18 @@ package utils
 		{
 			var bitmap:Bitmap = new Bitmap();
 			if(source==null) return bitmap;
-			
 			var rect:Rectangle = source.getBounds(source);
+			var x:int = Math.round(rect.x * scale);
+			var y:int = Math.round(rect.y * scale);
+			
 			if(rect.width<1 ) rect.width=1;
 			if(rect.height<1) rect.height=1;
 			
 			var bitmapData:BitmapData = new BitmapData(Math.ceil(rect.width*scale),Math.ceil(rect.height*scale),transparent,fillColor);
-			bitmapData.draw(source,new Matrix(scale,0,0,scale,rect.x,rect.y));
+			bitmapData.draw(source,new Matrix(scale,0,0,scale,-x,-y));
 			bitmap.bitmapData = bitmapData;
-			bitmap.x = rect.x;
-			bitmap.y = rect.y;
+			bitmap.x = x;
+			bitmap.y = y;
 			bitmap = clearWhiteArea(bitmap);
 			return bitmap;
 		}

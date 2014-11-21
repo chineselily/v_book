@@ -4,6 +4,7 @@ package popwindowmanager
 	
 	import appconfig.app.ProjectLayer;
 	import appconfig.window.windowCache;
+	
 	import view.PopWindow;
 
 	public class PopWindowData
@@ -28,7 +29,11 @@ package popwindowmanager
 		
 		public function get win():PopWindow
 		{
-			if(_win==null) _win = new winClazz() as PopWindow;
+			if(_win==null)
+			{
+				_win = new winClazz() as PopWindow;
+				_win.popData = this;
+			}
 			return _win;
 		}
 		public function get winClazz():Class
@@ -42,7 +47,7 @@ package popwindowmanager
 		}		
 		public function get id():String
 		{
-			return id;
+			return _id;
 		}
 		public function get clone_id():String
 		{
@@ -79,6 +84,11 @@ package popwindowmanager
 		public function get resPath():String
 		{
 			return windowCache.Instance.windowPath(_id);
+		}
+		
+		public function get isNoRes():Boolean
+		{
+			return resPath==null || resPath=="";
 		}
 		
 		public function get container():Sprite

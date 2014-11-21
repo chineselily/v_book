@@ -29,7 +29,7 @@ package utils
 			var rectS:Rectangle = objStandard.getBounds(objStandard);
 			var rectC:Rectangle = objChange.getBounds(objChange);
 			
-			var x:Number = xValue(rectS.x,rectS.width,rectC.x,rectC.width,align,objStandard.scaleX,objChange.scaleY);
+			var x:Number = xValue(rectS.x,rectS.width,rectC.x,rectC.width,align,objStandard.scaleX,objChange.scaleX);
 			var y:Number = yValue(rectS.y,rectS.height,rectC.y,rectC.height,align,objStandard.scaleY,objChange.scaleY);
 			
 			point.x=x; point.y=y;
@@ -44,7 +44,7 @@ package utils
 			var rectS:Rectangle = rectStandard;
 			var rectC:Rectangle = objChange.getBounds(objChange);
 			
-			var x:Number = xValue(rectS.x,rectS.width,rectC.x,rectC.width,align,1,objChange.scaleY);
+			var x:Number = xValue(rectS.x,rectS.width,rectC.x,rectC.width,align,1,objChange.scaleX);
 			var y:Number = yValue(rectS.y,rectS.height,rectC.y,rectC.height,align,1,objChange.scaleY);
 			
 			point.x=x; point.y=y;
@@ -84,6 +84,8 @@ package utils
 		
 		private static function pMid(pLeft:Number, pWidth:Number, pscale:Number):Number
 		{
+			var value:Number = (pWidth/2+pLeft)*pscale;
+			trace(value);
 			return (pWidth/2+pLeft)*pscale;
 		}
 		

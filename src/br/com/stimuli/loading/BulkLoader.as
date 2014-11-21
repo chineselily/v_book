@@ -48,6 +48,7 @@ package br.com.stimuli.loading{
     import flash.utils.Dictionary;
     import flash.utils.getTimer;
     
+    import br.com.stimuli.loading.loadingtypes.AVM1Item;
     import br.com.stimuli.loading.loadingtypes.BinaryItem;
     import br.com.stimuli.loading.loadingtypes.ImageItem;
     import br.com.stimuli.loading.loadingtypes.LoadingItem;
@@ -146,6 +147,8 @@ package br.com.stimuli.loading{
         public static const TYPE_IMAGE : String = "image";
         /** Tells this class to use a <code>Loader</code> object to load the item.*/
         public static const TYPE_MOVIECLIP : String = "movieclip";
+		
+		public static const TYPE_AVM1:String = "avm1";
 
         /** Tells this class to use a <code>Sound</code> object to load the item.*/
         public static const TYPE_SOUND : String = "sound";
@@ -156,7 +159,7 @@ package br.com.stimuli.loading{
         /** Tells this class to use a <code>NetStream</code> object to load the item.*/
         public static const TYPE_VIDEO : String = "video";
 
-        public static const AVAILABLE_TYPES : Array = [TYPE_VIDEO, TYPE_XML, TYPE_TEXT, TYPE_SOUND, TYPE_MOVIECLIP, TYPE_IMAGE, TYPE_BINARY];
+        public static const AVAILABLE_TYPES : Array = [TYPE_VIDEO, TYPE_XML, TYPE_TEXT, TYPE_SOUND, TYPE_MOVIECLIP, TYPE_IMAGE, TYPE_BINARY, TYPE_AVM1];
         /** List of all file extensions that the <code>BulkLoader</code> knows how to guess.
          *   Availabe types: swf, jpg, jpeg, gif, png. */
         public static var AVAILABLE_EXTENSIONS : Array = ["swf", "jpg", "jpeg", "gif", "png", "flv", "mp3", "xml", "txt", "js" ];
@@ -389,7 +392,8 @@ package br.com.stimuli.loading{
             video: VideoItem,
             sound: SoundItem,
             text: URLItem,
-            binary: BinaryItem
+            binary: BinaryItem,
+			avm1:AVM1Item
         };
 
         /** Creates a new BulkLoader object identifiable by the <code>name</code> parameter. The <code>name</code> parameter must be unique, else an Error will be thrown.

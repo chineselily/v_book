@@ -2,22 +2,29 @@ package appconfig.book
 {
 	import flash.utils.Dictionary;
 
-	public class BookConfigCache
+	public class bookConfigCache
 	{
 		private static var _dBookConfig:Dictionary = new Dictionary();
-		public function BookConfigCache()
+		private static var _arrBookId:Array=[];
+		public function bookConfigCache()
 		{
 		}
 		
-		public static function parseBookResConfig(xmllist:XMLList):void
+		public static function parseBookResConfig(xml:XML):void
 		{
 			var book:bookConfig
-			for each(var xml:XML in xmllist)
+			for each(var xmlelem:XML in xml.book.info)
 			{
 				book = new bookConfig();
-				book.parsexml(xml);
+				book.parsexml(xmlelem);
 				_dBookConfig[book.id] = book;
+				_arrBookId.push(book.id);
 			}
+		}
+		
+		public static function get arrBookId():Array
+		{
+			return _arrBookId;
 		}
 		
 		public static function pngPath(id:String):String
@@ -42,6 +49,8 @@ class bookConfig
 	public var id:String;
 	public var page:int;
 	public var index:int;
+	public var width:int;
+	public var height:int;
 	private var _bpath:String;
 	private var _ppath:String;
 	
@@ -56,6 +65,8 @@ class bookConfig
 		index = xml.@index;
 		_bpath = xml.@bpath;
 		_ppath = xml.@ppath;
+		width = xml.@width;
+		height = xml.@height;
 	}
 	
 	public function get bpath():String

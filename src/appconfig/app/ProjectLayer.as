@@ -6,13 +6,14 @@ package appconfig.app
 	{
 		private static var _instance:ProjectLayer;
 		public static const LAYER_START:int=0;
-		public static const LAYER_BOOK:int=LAYER_START;
-		public static const LAYER_TOOL:int=LAYER_START+1;
-		public static const LAYER_DRAW:int=LAYER_START+2;
-		public static const LAYER_NOTESHOW:int=LAYER_START+3;
-		public static const LAYER_NOTEWRITE:int=LAYER_START+4;
-		public static const LAYER_VEDIO:int=LAYER_START+5;
-		public static const LAYER_LOADING:int=LAYER_START+6;
+		public static const LAYER_BOOKICON:int=LAYER_START;
+		public static const LAYER_BOOK:int=LAYER_START+1;
+		public static const LAYER_TOOL:int=LAYER_START+2;
+		public static const LAYER_DRAW:int=LAYER_START+3;
+		public static const LAYER_NOTESHOW:int=LAYER_START+4;
+		public static const LAYER_NOTEWRITE:int=LAYER_START+5;
+		public static const LAYER_VEDIO:int=LAYER_START+6;
+		public static const LAYER_LOADING:int=LAYER_START+7;
 		public static const LAYER_END:int = LAYER_LOADING;
 		
 		private var _aLayers:Array;

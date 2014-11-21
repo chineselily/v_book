@@ -1,2 +1,10 @@
 w3cschool    百度一下，--网站学习 
 https://github.com/  chineselily 840512liulili
+
+
+软件下载
+http://www.skycn.com/
+
+http://www.buraks.com/flvmdi/
+
+发布的时候，要将所有的资源打包，在发布页面上可以选择打包的文件夹。

@@ -34,7 +34,7 @@ package loadermanager
 			return _instance;
 		}
 		
-		public function addGroup(sGroup:String, sPath:String):LoaderFactoryItem
+		public function addGroup(sGroup:String, sPath:String, obj:Object=null):LoaderFactoryItem
 		{
 			var _bloader:BulkLoader = _dicBloader[sGroup];
 			
@@ -47,7 +47,7 @@ package loadermanager
 			}
 			
 			if(_dicFactoryItem[formKey(sGroup,sPath)]==null)
-				_dicFactoryItem[formKey(sGroup,sPath)] = new LoaderFactoryItem(_bloader,sPath);
+				_dicFactoryItem[formKey(sGroup,sPath)] = new LoaderFactoryItem(_bloader,sPath, obj);
 			
 			if(!_bloader.isRunning) _bloader.start();
 			

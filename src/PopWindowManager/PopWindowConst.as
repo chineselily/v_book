@@ -8,6 +8,7 @@ package popwindowmanager
 		public static const ANI_TYPE_NONE:int=1;//无动画
 		public static const ANI_TYPE_CENTER:int=2;//从中间向两边放大
 		public static const ANI_TYPE_LEFTTOP:int=3;//从左上角向下向右放大
+		public static const ANI_TYPE_BOTTOM:int=4;//直接放在屏幕下方
 		
 		/**
 		 *打开窗口是否掩码 

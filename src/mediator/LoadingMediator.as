@@ -29,8 +29,11 @@ package mediator
 					_loading = _popupManager.Open(ViewConst.Loading,evt.params) as winLoading;
 					break;
 				case LoadingEvent.UPDATE:
-					if(_loading)
+					if(_loading && _loading.visible)
 						_loading.update(evt.params[0],evt.params[1]);
+					break;
+				case LoadingEvent.CLOSE:
+					_popupManager.Close(ViewConst.Loading);
 					break;
 			}
 		}
@@ -45,7 +48,7 @@ package mediator
 		override protected function attachPopWindows():void
 		{
 			_popupManager.registPop(ViewConst.Loading,winLoading,ProjectLayer.LAYER_LOADING,
-				                    PopWindowConst.POP_NOTSAMEWIN,PopWindowConst.ANI_TYPE_CENTER);
+				                    PopWindowConst.POP_NOTSAMEWIN,PopWindowConst.ANI_TYPE_NONE);
 		}
 	}
 }

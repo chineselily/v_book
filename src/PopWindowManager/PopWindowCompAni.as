@@ -1,10 +1,14 @@
 package popwindowmanager
 {
 	import flash.display.Bitmap;
+	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	
 	import appconfig.app.ProjectStage;
 	
+	import utils.alignTool;
 	import utils.aniTool;
 	import utils.drawTool;
 
@@ -13,40 +17,55 @@ package popwindowmanager
 		public function PopWindowCompAni()
 		{
 		}
-		public static function winOpenAni(winData:PopWindowData, container:DisplayObjectContainer,winObj:Object=null):void
+		public static function winOpenAni(dis:DisplayObject, container:DisplayObjectContainer,aniType:int,callback:Function=null):void
 		{
-			if(winData==null) return;
-			var x:Number = winObj==null?0:winObj[x];
-			var y:Number = winObj==null?0:winObj[y];
-			winData.win.x=x; winData.win.y=y;
+			if(dis==null) return;
+			var pointc:Point;
 			
-			if(winData.aniType == PopWindowConst.ANI_TYPE_NONE) return;
-			var bitmap:Bitmap = drawTool.draw(winData.win);
-			bitmap.scaleX=bitmap.scaleY=0.1;
-			container.addChild(bitmap);
-			winData.win.visible=false;
-			var toObj:Object;
-			if(winData.aniType == PopWindowConst.ANI_TYPE_CENTER)
+			if(aniType == PopWindowConst.ANI_TYPE_CENTER)
 			{
-				bitmap.x = ProjectStage.WIDTH/2; bitmap.y = ProjectStage.HEIGHT/2;
-				toObj = {x:winData.win.x,y:winData.win.y,scaleX:1,scaleY:1, onComplete:aniComplete, onCompleteParams:[winData, bitmap, container]};
-				utils.aniTool.Instance().to(bitmap,1,toObj);
+				pointc = alignTool.alginRect(new Rectangle(0,0,ProjectStage.width,ProjectStage.height),dis,alignTool.MIDDLE);
 			}
-			else if(winData.aniType == PopWindowConst.ANI_TYPE_LEFTTOP)
+			else if(aniType == PopWindowConst.ANI_TYPE_LEFTTOP)
 			{
-				bitmap.x+=x;
-				bitmap.y+=y;
-				toObj={scaleX:1,scaleY:1,onComplete:aniComplete, onCompleteParams:[winData, bitmap, container]};
-				utils.aniTool.Instance().to(bitmap,1,toObj);
+				pointc = alignTool.alginRect(new Rectangle(0,0,ProjectStage.width,ProjectStage.height),dis,alignTool.TOP_LEFT);
+			}
+			else if(aniType == PopWindowConst.ANI_TYPE_BOTTOM)
+			{
+				pointc = alignTool.alginRect(new Rectangle(0,0,ProjectStage.WIDTH,ProjectStage.HEIGHT+ProjectStage.TOOLHEIGHT),dis,alignTool.BOTTOM);
+			}
+			if(pointc==null)
+			{
+				dis.visible=true;
+				callback();
+			}
+			else
+			{
+				var bitmap:Bitmap = drawTool.draw(dis);
+				container.addChild(bitmap);
+				dis.visible=false;
+				
+				var endx:Number = pointc.x+bitmap.x;
+				var endy:Number = pointc.y+bitmap.y;
+				
+				dis.x = pointc.x; dis.y=pointc.y;
+				
+				bitmap.x=endx+bitmap.width/2;bitmap.y=endy+bitmap.height/2;
+				bitmap.scaleX=bitmap.scaleY=0.1;
+				
+				var toObj:Object = {x:endx,y:endy,scaleX:1,scaleY:1, onComplete:aniComplete, onCompleteParams:[dis, bitmap, container,callback]};
+				utils.aniTool.to(bitmap,0.5,toObj);
 			}
 		}
 		
-		private static function aniComplete(winData:PopWindowData,bitmap:Bitmap, container:DisplayObjectContainer):void
+		private static function aniComplete(dis:DisplayObject,bitmap:Bitmap, container:DisplayObjectContainer,callback:Function):void
 		{
-			winData.win.visible=true;
+			dis.visible=true;
 			container.removeChild(bitmap);
 			bitmap.bitmapData.dispose();
 			bitmap=null;
+			if(callback!=null) 
+				callback();
 		}
 	}
 }
